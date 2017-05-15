@@ -75,14 +75,20 @@ fi
 checksum=${apostilleHash:0:10}
 hashingVersionBytes=${checksum:8:2}
 cryptoHash=${apostilleHash:10}
+signed=${hashingVersionBytes:1}
 
-if [ "$hashingVersionBytes" == "01" ] || [ "$hashingVersionBytes" == "81" ]; then
+if [ "$signed" == "8" ]; then
+    echo "Hash is signed, cannot check integrity just yet. Aborting..."
+    exit
+fi
+
+if [ "$hashingVersionBytes" == "01" ]; then
     hashFunction="md5sum"
-elif [ "$hashingVersionBytes" == "02" ] || [ "$hashingVersionBytes" == "82" ]; then
+elif [ "$hashingVersionBytes" == "02" ]; then
     hashFunction="sha1sum"
-elif [ "$hashingVersionBytes" == "03" ] || [ "$hashingVersionBytes" == "83" ]; then    
+elif [ "$hashingVersionBytes" == "03" ]; then    
     hashFunction="sha256sum"
-elif [ "$hashingVersionBytes" == "08" ] || [ "$hashingVersionBytes" == "88" ]; then
+elif [ "$hashingVersionBytes" == "08" ]; then
     echo "256bit SHA3 not supported yet. Aborting..."
     exit
 else 
