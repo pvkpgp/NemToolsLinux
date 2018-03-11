@@ -80,9 +80,14 @@ else
 fi
 
 # Create NEM application content
-echo -e "\033[32m*\033[m Creating NIS specific directories"
-mkdir -p /opt/$NEMUSER/nem/nis/data
-mkdir -p /opt/$NEMUSER/nem/nis/logs/oldlogs
+if [ ! -e "/opt/$NEMUSER" ]; then
+  echo -e "\033[32m*\033[m Creating NIS specific directories"
+  mkdir -p /opt/$NEMUSER/nem/nis/data
+  mkdir -p /opt/$NEMUSER/nem/nis/logs/oldlogs
+else
+  echo -e "\033[32m*\033[m Required directory exist. Aborting because might break something."
+  exit
+fi
 
 # Add initial NEM blockhain in place
 if [ ! -e "/opt/$NEMUSER/nem/nis/data/nis5_mainnet.h2.db" ]; then
@@ -103,6 +108,11 @@ cp /opt/$NEMUSER/nis_latest/nis/config.properties /opt/$NEMUSER/nem/config-user.
 #
 # Create systemd service 
 #
+if [ -e "/etc/systemd/system/nis.service" ]; then
+  echo -e "\033[32m*\033[m Systemd service file already exists. Aborting because might break something."
+  exit
+fi
+
 echo -e "\033[32m*\033[m Creating systemd service"
 cat > /etc/systemd/system/nis.service <<EOF
 [Unit]
@@ -126,6 +136,11 @@ EOF
 #
 # Install crontab script to compress old log files daily
 #
+if [ -e "/etc/cron.daily/nemnis_logcompress.sh" ]; then
+  echo -e "\033[32m*\033[m Cron daily file already exists. Aborting because might break something."
+  exit
+fi
+
 echo -e "\033[32m*\033[m Installing logrotate and compress script to cron daily"
 cat > /etc/cron.daily/nemnis_logcompress.sh <<EOF
 #!/bin/bash
@@ -153,6 +168,11 @@ chown -R $NEMUSER:$NEMUSER /opt/$NEMUSER
 #
 # Add NEM Nis service to firewalld
 #
+if [ -e "/etc/firewalld/services/nem-nis.xml" ]; then
+  echo -e "\033[32m*\033[m Cron daily file already exists. Aborting because might break something."
+  exit
+fi
+
 echo -e "\033[32m*\033[m Adding NIS as firewall service and allowing port 7890 to server"
 cat > /etc/firewalld/services/nem-nis.xml <<EOF
 <?xml version="1.0" encoding="utf-8"?>
