@@ -56,7 +56,8 @@ if [[ $word = *"db.zip"* ]]; then
 done
 
 if id -u "$NEMUSER" >/dev/null 2>&1; then
-  echo -e "\033[32m*\033[m User exists."
+  echo -e "\033[32m*\033[m User exists. Aborting because might break something."
+  exit
 else
   echo -e "\033[32m*\033[m Creating user $NEMUSER"
   adduser $NEMUSER -s /sbin/nologin -d /opt/$NEMUSER
