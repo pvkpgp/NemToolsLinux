@@ -1,5 +1,7 @@
 # NemToolsLinux
-Tools that help working with NEM blockchain
+Tools that help working with NEM blockchain. **Scripts are FAN made, check scripts yourself before you use them! I cannot help you if you break production server with these scripts.**
+
+**NEM Devs have not checked or supported these scripts, use at your own risk!**
 
 # checkIntegrityAgainstApostille.sh
 Will check file integrity against NEM blockchain Apostille service. User must download file and signature file before applying this script. When applying this script, it only needs filename (it assumes that signature file is same name but with suffix ".sig").
@@ -7,7 +9,12 @@ Will check file integrity against NEM blockchain Apostille service. User must do
 Supported hashes: MD5, SHA1, SHA256 and SHA3
 Supported distributions: Centos 7, Ubuntu 1604 (and above? have not tested)
 
+(Note: Should be safe script to use, does not do any changes to system.)
+
 # install_nis_on_centos7.sh
+
+**Warning:** This script must be ran as root and can break your server! **Check script before running it! And/or test it on testserver before using it.**
+
 Install script for NEM Nis on Centos 7. Features:
 
 Details:
